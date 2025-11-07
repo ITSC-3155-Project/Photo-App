@@ -53,8 +53,8 @@ This application demonstrates a complete single-page application (SPA) with:
 - **User Stories:** See [USER_STORIES.md](./USER_STORIES.md) for detailed user stories
 - **Scrum Documentation:** See [SCRUM.md](./SCRUM.md) for sprint planning and ceremonies
 - **Daily Standups:** See [STANDUP.md](./STANDUP.md) for daily progress tracking
-- **Project Board:** [Link to your GitHub Project Board]
-- **GitHub Issues:** [Link to your issues page]
+- **Project Board:** [https://github.com/ITSC-3155-Project/Photo-Sprint-App-1]
+- **GitHub Issues:** [https://github.com/ITSC-3155-Project/Photo-Sprint-App-1/issues]
 
 ### Project Board Workflow:
 ```
