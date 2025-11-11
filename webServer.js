@@ -1,9 +1,8 @@
-cat > webServer.js << 'EOF'
 "use strict";
 
 /**
  * Photo App Sprint 2 web server.
- * Uses MongoDB (project6) via Mongoose; no modelData.
+ * Uses MongoDB (project6) via Mongoose.
  */
 
 const mongoose = require("mongoose");
@@ -14,7 +13,6 @@ const async = require("async");
 const express = require("express");
 const app = express();
 
-// Load models from root
 const User = require("./user.js");
 const Photo = require("./photo.js");
 const SchemaInfo = require("./schemaInfo.js");
@@ -25,7 +23,7 @@ mongoose.connect("mongodb://127.0.0.1/project6", {
   useUnifiedTopology: true,
 });
 
-// Serve static files from project root
+// Serve static files from the project root directory
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
@@ -84,7 +82,7 @@ app.get("/test/:p1?", (req, res) => {
 
 /**
  * GET /user/list
- * Return [{ _id, first_name, last_name }]
+ * -> [{ _id, first_name, last_name }]
  */
 app.get("/user/list", (req, res) => {
   User.find({}, "_id first_name last_name", (err, users) => {
@@ -104,7 +102,7 @@ app.get("/user/list", (req, res) => {
 
 /**
  * GET /user/:id
- * Return full user or 400 if invalid / not found.
+ * -> full user or 400 if invalid/not found
  */
 app.get("/user/:id", (req, res) => {
   const id = req.params.id;
@@ -136,7 +134,7 @@ app.get("/user/:id", (req, res) => {
 
 /**
  * GET /photosOfUser/:id
- * Return photos for user id, with comment.user populated.
+ * -> photos for that user with comment.user populated
  */
 app.get("/photosOfUser/:id", (req, res) => {
   const id = req.params.id;
@@ -146,6 +144,7 @@ app.get("/photosOfUser/:id", (req, res) => {
     return;
   }
 
+  // Ensure user exists
   User.findById(id, (err, user) => {
     if (err) {
       res.status(500).send(JSON.stringify(err));
@@ -167,7 +166,9 @@ app.get("/photosOfUser/:id", (req, res) => {
         const commentUserIds = new Set();
         photos.forEach((p) =>
           (p.comments || []).forEach((c) => {
-            if (c.user_id) commentUserIds.add(String(c.user_id));
+            if (c.user_id) {
+              commentUserIds.add(String(c.user_id));
+            }
           })
         );
 
@@ -222,4 +223,3 @@ const server = app.listen(3000, () => {
       __dirname
   );
 });
-EOF
