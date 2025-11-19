@@ -27,7 +27,7 @@ This application demonstrates a complete single-page application (SPA) with:
 |------|-------------|
 | **Product Owner** | Monish Munagala |
 | **Scrum Master** | Monish Munagala |
-| **Developer** | Monish Munagala |
+| **Developer** | Monish Munagala, Alexander Wilson, Jason Barkdale, Sulaiman Mohamed |
 
 *Note: Individual project with one person fulfilling multiple roles*
 
