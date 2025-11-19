@@ -207,12 +207,18 @@ app.get("/photosOfUser/:id", async (req, res) => {
   }
 });
 
-const server = app.listen(3000, () => {
-  const port = server.address().port;
-  console.log(
-    "Listening at http://localhost:" +
-      port +
-      " exporting the directory " +
-      __dirname
-  );
-});
+// Start the server ONLY when running this file directly.
+// When required by Mocha tests, no server is started.
+if (require.main === module) {
+  const server = app.listen(3000, () => {
+    const port = server.address().port;
+    console.log(
+      "Listening at http://localhost:" +
+        port +
+        " exporting the directory " +
+        __dirname
+    );
+  });
+}
+
+module.exports = app;
