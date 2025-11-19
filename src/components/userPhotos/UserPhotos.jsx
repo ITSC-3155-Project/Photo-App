@@ -227,36 +227,33 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CommentIcon from '@mui/icons-material/Comment';
-import FetchModel from '../../lib/fetchModelData';  
+import axios from 'axios';
 
-function UserPhotos() {
-  const { userId } = useParams();
-  const navigate = useNavigate();
-  const [photos, setPhotos] = useState([]);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const fetchPhotosAndUser = async () => {
+      setLoading(true);
+      setError(null);
 
-    // Fetch both photos and user info
-    Promise.all([
-      FetchModel(`/photosOfUser/${userId}`),
-      FetchModel(`/user/${userId}`)
-    ])
-      .then(([photosResponse, userResponse]) => {
+      try {
+        const [photosResponse, userResponse] = await Promise.all([
+          axios.get(`/photosOfUser/${userId}`),
+          axios.get(`/user/${userId}`)
+        ]);
+
         setPhotos(photosResponse.data);
         setUser(userResponse.data);
         setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
         console.error('Error loading photos:', err);
         setError('Failed to load photos');
         setLoading(false);
-      });
+      }
+    };
+
+    fetchPhotosAndUser();
   }, [userId]);
+
 
   const formatDateTime = (dateTime) => {
     return new Date(dateTime).toLocaleString('en-US', {
