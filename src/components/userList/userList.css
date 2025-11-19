@@ -1,0 +1,19 @@
+/* UserList panel styling */
+
+.MuiList-root {
+  padding-top: 0;
+}
+
+.MuiListItemButton-root {
+  border-radius: 10px;
+}
+
+.MuiListItemButton-root.Mui-selected {
+  font-weight: 600;
+}
+
+.MuiListItemButton-root .MuiListItemText-primary {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
