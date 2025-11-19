@@ -83,7 +83,7 @@
 import { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, Chip } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import FetchModel from '../../lib/fetchModelData';
+import axios from 'axios';
 
 function TopBar() {
   const [context, setContext] = useState('Photo Sharing App');
@@ -92,44 +92,48 @@ function TopBar() {
 
   // Fetch version on mount
   useEffect(() => {
-    FetchModel('/test/info')
-      .then(response => {
+    const fetchVersion = async () => {
+      try {
+        const response = await axios.get('/test/info');
         setVersion(`Photo Sprint App ${response.data.__v}`);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching schema info:', error);
-      });
+      }
+    };
+
+    fetchVersion();
   }, []);
 
   // Update context based on current route
   useEffect(() => {
-    const path = location.pathname;
-    
-    if (path === '/' || path === '/users') {
-      setContext('Photo Sharing App');
-    } else if (path.startsWith('/users/')) {
-      const userId = path.split('/')[2];
-      FetchModel(`/user/${userId}`)
-        .then(response => {
+    const fetchContext = async () => {
+      const path = location.pathname;
+
+      if (path === '/' || path === '/users') {
+        setContext('Photo Sharing App');
+        return;
+      }
+
+      if (path.startsWith('/users/') || path.startsWith('/photos/')) {
+        const userId = path.split('/')[2];
+
+        try {
+          const response = await axios.get(`/user/${userId}`);
           const user = response.data;
-          setContext(`${user.first_name} ${user.last_name}`);
-        })
-        .catch(error => {
+
+          if (path.startsWith('/users/')) {
+            setContext(`${user.first_name} ${user.last_name}`);
+          } else {
+            setContext(`Photos of ${user.first_name} ${user.last_name}`);
+          }
+        } catch (error) {
           console.error('Error fetching user:', error);
-          setContext('User Details');
-        });
-    } else if (path.startsWith('/photos/')) {
-      const userId = path.split('/')[2];
-      FetchModel(`/user/${userId}`)
-        .then(response => {
-          const user = response.data;
-          setContext(`Photos of ${user.first_name} ${user.last_name}`);
-        })
-        .catch(error => {
-          console.error('Error fetching user:', error);
-          setContext('User Photos');
-        });
-    }
+          setContext(path.startsWith('/users/') ? 'User Details' : 'User Photos');
+        }
+      }
+    };
+
+    fetchContext();
   }, [location]);
 
   return (
