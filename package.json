@@ -6,7 +6,7 @@
   "dev": "vite",
   "build": "vite build",
   "preview": "vite preview",
-  "server": "node server/webServer.js",
+  "server": "node webserver.js",
   "start": "concurrently \"npm run server\" \"npm run dev\"",
   "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
   "lint:fix": "eslint . --ext js,jsx --fix",
