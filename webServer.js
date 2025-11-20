@@ -13,9 +13,9 @@ const asyncLib = require("async");
 const express = require("express");
 const app = express();
 
-const User = require("./user.js");
-const Photo = require("./photo.js");
-const SchemaInfo = require("./schemaInfo.js");
+const User = require("./schema/user.js");
+const Photo = require("./schema/photo.js");
+const SchemaInfo = require("./schema/schemaInfo.js");
 
 // Connect to MongoDB
 mongoose.connect("mongodb://127.0.0.1/project6", {
