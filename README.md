@@ -374,3 +374,15 @@ npm run build
 
 *Last Updated: November 6, 2025*  
 *Sprint 1 - Photo Sharing Application*  
+
+## Sprint 2 – How to Run
+
+1. Run MongoDB locally (default port 27017).
+2. In the project root:
+
+   ```bash
+   npm install
+   node loadDatabase.js
+   npm test          # runs Mocha API tests
+   npm run server    # starts webServer.js on port 3000
+
