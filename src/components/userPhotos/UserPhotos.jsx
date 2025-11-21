@@ -204,13 +204,6 @@
 // }
 
 // export default UserPhotos;
-
-
-
-
-
-
-
 import { useEffect, useState } from 'react';
 import {
   Box,
@@ -229,6 +222,14 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import CommentIcon from '@mui/icons-material/Comment';
 import axios from 'axios';
 
+function UserPhotos() {
+  const { userId } = useParams();
+  const navigate = useNavigate();
+
+  const [photos, setPhotos] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPhotosAndUser = async () => {
@@ -253,7 +254,6 @@ import axios from 'axios';
 
     fetchPhotosAndUser();
   }, [userId]);
-
 
   const formatDateTime = (dateTime) => {
     return new Date(dateTime).toLocaleString('en-US', {
@@ -305,10 +305,10 @@ import axios from 'axios';
   return (
     <Box sx={{ p: 4, maxWidth: 1000, mx: 'auto' }}>
       <Box sx={{ mb: 5, textAlign: 'center' }}>
-        <Typography 
-          variant="h3" 
-          gutterBottom 
-          sx={{ 
+        <Typography
+          variant="h3"
+          gutterBottom
+          sx={{
             fontWeight: 700,
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             WebkitBackgroundClip: 'text',
@@ -319,7 +319,7 @@ import axios from 'axios';
         >
           {user?.first_name}&apos;s Gallery
         </Typography>
-        <Chip 
+        <Chip
           label={`${photos.length} ${photos.length === 1 ? 'Photo' : 'Photos'}`}
           sx={{
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -331,11 +331,10 @@ import axios from 'axios';
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-
         {photos.map((photo) => (
-          <Card 
-            key={photo._id} 
-            sx={{ 
+          <Card
+            key={photo._id}
+            sx={{
               borderRadius: 4,
               overflow: 'hidden',
               background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%)',
@@ -349,7 +348,6 @@ import axios from 'axios';
               }
             }}
           >
-            {/* Photo image */}
             <CardMedia
               component="img"
               height="500"
@@ -360,12 +358,11 @@ import axios from 'axios';
                 bgcolor: 'grey.200'
               }}
               onError={(e) => {
-                // Fallback if image doesn't exist
                 e.target.style.display = 'none';
                 e.target.nextSibling.style.display = 'flex';
               }}
             />
-            {/* Fallback placeholder if image fails to load */}
+
             <Box
               sx={{
                 height: 500,
@@ -383,7 +380,6 @@ import axios from 'axios';
             </Box>
 
             <CardContent sx={{ p: 4 }}>
-              {/* Photo date and stats */}
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <CalendarTodayIcon sx={{ fontSize: 18, color: '#667eea' }} />
@@ -392,7 +388,7 @@ import axios from 'axios';
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                  <Chip 
+                  <Chip
                     icon={<CommentIcon sx={{ fontSize: 16 }} />}
                     label={photo.comments?.length || 0}
                     size="small"
@@ -405,15 +401,14 @@ import axios from 'axios';
                 </Box>
               </Box>
 
-              {/* Comments section */}
               {photo.comments && photo.comments.length > 0 ? (
                 <>
                   <Divider sx={{ mb: 3 }} />
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                     <CommentIcon sx={{ mr: 1.5, color: '#667eea', fontSize: 22 }} />
-                    <Typography 
-                      variant="h6" 
-                      sx={{ 
+                    <Typography
+                      variant="h6"
+                      sx={{
                         fontWeight: 700,
                         color: '#667eea'
                       }}
@@ -501,3 +496,4 @@ import axios from 'axios';
 }
 
 export default UserPhotos;
+
