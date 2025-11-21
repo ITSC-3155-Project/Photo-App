@@ -1,3 +1,7 @@
+// THIS FILE IS DISABLED.
+// SPRINT 2 REQUIRES USING AXIOS INSTEAD OF FETCHMODEL.
+// ALL CODE BELOW IS KEPT ONLY AS A BACKUP.
+
 // /**
 //  * FetchModel - Fetch a model from the web server.
 //  * 
@@ -86,6 +90,7 @@
  *   status: The HTTP response status
  *   statusText: The statusText from the xhr request
  */
+/*
 function FetchModel(url) {
   return new Promise((resolve, reject) => {
     // Create a new XMLHttpRequest object
@@ -140,3 +145,4 @@ function FetchModel(url) {
 }
 
 export default FetchModel;
+*/
