@@ -11,9 +11,9 @@ mongoose.connect("mongodb://127.0.0.1/project6", {
 
 // Load the data and schema definitions
 const models = require('./photoApp.js').models;
-const User = require("./user.js");
-const Photo = require("./photo.js");
-const SchemaInfo = require("./schemaInfo.js");
+const User = require('./schema/user.js');
+const Photo = require('./schema/photo.js');
+const SchemaInfo = require('./schema/schemaInfo.js');
 
 const versionString = "1.0";
 
