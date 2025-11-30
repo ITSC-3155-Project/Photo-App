@@ -10,6 +10,7 @@ const http = require("http");
 const async = require("async");
 const _ = require("lodash");
 const fs = require("fs");
+const path = require("path");
 
 const models = require("../modelData/photoApp.js").models;
 
@@ -48,7 +49,7 @@ function removeMongoProperties(model) {
 describe("Photo App: Web API Tests", function () {
   describe("test using model data", function (done) {
     it("webServer does not use model data", function (done) {
-      fs.readFile("../webServer.js", function (err, data) {
+      fs.readFile(path.join(__dirname, "..", "webServer.js"), function (err, data) {
         if (err) throw err;
         const regex =
           /\n\s*const models = require\('\.\/modelData\/photoApp\.js'\)\.models;/g;
