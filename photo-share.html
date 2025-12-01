@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photo Sharing App - Monish Munagala</title>
-    <meta name="description" content="A photo sharing application built with React, Material-UI, and Express" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    
-    <!-- Note: This app no longer uses window.models -->
-    <!-- All data is fetched from the Express server via AJAX -->
-    <!-- Previous line: <script src="modelData/photoApp.js"></script> -->
-  </body>
+<!doctype html>
+<!-- React.js applications are written in JavaScript but you need an
+     HTML document to load the JavaScript. This HTML loads the React.js
+     component Example -->
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Class Project</title>
+        <!-- Insert the model data for the Example widet into the DOM -->
+        <script src="modelData/photoApp.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    </head>
+    <body>
+        <div id="photoshareapp"></div>
+        <script src="compiled/photoShare.bundle.js"></script>
+    </body>
 </html>
