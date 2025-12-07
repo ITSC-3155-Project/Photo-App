@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   location: String,
   description: String,
   occupation: String,
+  login_name: String,   // NEW for Sprint 3
+  password: String      // NEW for Sprint 3
 });
 
 const User = mongoose.model("User", userSchema);
