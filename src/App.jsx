@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import "./styles/main.css";
 
@@ -9,72 +9,80 @@ import UserDetail from "./components/userDetail/userDetail.jsx";
 import UserPhotos from "./components/userPhotos/userPhotos.jsx";
 import LoginRegister from "./components/loginRegister/loginRegister.jsx";
 
-/**
- * Root React component for the Photo App.
- * The router is created in photoShare.jsx; here we just define routes.
- */
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   return (
     <div className="cs142-main">
-      {/* Top toolbar always visible */}
       <TopBar
         loggedInUser={loggedInUser}
         setLoggedInUser={setLoggedInUser}
       />
 
       <div className="cs142-content">
-        <Switch>
-          {/* Login / registration page – always reachable */}
-          <Route path="/login-register">
-            <LoginRegister setLoggedInUser={setLoggedInUser} />
-          </Route>
+        <Routes>
+          {/* Login/register is always reachable */}
+          <Route
+            path="/login-register"
+            element={<LoginRegister setLoggedInUser={setLoggedInUser} />}
+          />
 
-          {/* Everything below here requires a logged-in user */}
+          {/* Everything below this requires login */}
           {loggedInUser ? (
             <>
-              <Route path="/users/:userId">
-                <div className="cs142-main-content">
-                  <div className="cs142-left-pane">
-                    <UserList />
+              <Route
+                path="/users/:userId"
+                element={
+                  <div className="cs142-main-content">
+                    <div className="cs142-left-pane">
+                      <UserList />
+                    </div>
+                    <div className="cs142-right-pane">
+                      <UserDetail />
+                    </div>
                   </div>
-                  <div className="cs142-right-pane">
-                    <UserDetail />
-                  </div>
-                </div>
-              </Route>
+                }
+              />
 
-              <Route path="/photos/:userId">
-                <div className="cs142-main-content">
-                  <div className="cs142-left-pane">
-                    <UserList />
+              <Route
+                path="/photos/:userId"
+                element={
+                  <div className="cs142-main-content">
+                    <div className="cs142-left-pane">
+                      <UserList />
+                    </div>
+                    <div className="cs142-right-pane">
+                      <UserPhotos />
+                    </div>
                   </div>
-                  <div className="cs142-right-pane">
-                    <UserPhotos />
-                  </div>
-                </div>
-              </Route>
+                }
+              />
 
-              <Route path="/users">
-                <div className="cs142-main-content">
-                  <div className="cs142-left-pane">
-                    <UserList />
+              <Route
+                path="/users"
+                element={
+                  <div className="cs142-main-content">
+                    <div className="cs142-left-pane">
+                      <UserList />
+                    </div>
+                    <div className="cs142-right-pane">
+                      <div>Please select a user.</div>
+                    </div>
                   </div>
-                  <div className="cs142-right-pane">
-                    <div>Please select a user.</div>
-                  </div>
-                </div>
-              </Route>
+                }
+              />
 
-              {/* default route when logged in: go to own user page */}
-              <Redirect to={`/users/${loggedInUser._id}`} />
+              {/* Default when logged in: go to own user page */}
+              <Route
+                path="*"
+                element={<Navigate to={`/users/${loggedInUser._id}`} replace />}
+              />
             </>
           ) : (
-            // If not logged in, force them to the login/register view
-            <Redirect to="/login-register" />
+            // If not logged in, force any route to login-register
+            <Route path="*" element={<Navigate to="/login-register" replace />} />
           )}
-        </Switch>
+        </Routes>
       </div>
     </div>
   );
