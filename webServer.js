@@ -65,6 +65,11 @@ app.use((request, response, next) => {
     return next();
   }
 
+  // Allow REGISTRATION without being logged in
+  if (request.path === "/user" && request.method === "POST") {
+    return next();
+  }
+
   // Only enforce auth on protected API routes
   const needsAuth = protectedPrefixes.some((prefix) =>
     request.path.startsWith(prefix)
@@ -76,6 +81,7 @@ app.use((request, response, next) => {
 
   return next();
 });
+
 
 
 /**
