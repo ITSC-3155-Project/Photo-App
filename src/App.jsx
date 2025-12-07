@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import "./styles/main.css";
+import "../styles/main.css";
 
 import TopBar from "./components/topBar/TopBar.jsx";
 import UserList from "./components/userList/userList.jsx";
