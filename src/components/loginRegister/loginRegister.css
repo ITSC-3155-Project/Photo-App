@@ -1,0 +1,74 @@
+.cs142-login-register {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.cs142-login-panel,
+.cs142-register-panel {
+  flex: 1 1 320px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 16px 20px;
+  background-color: #fafafa;
+}
+
+.cs142-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cs142-form-row {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.cs142-label {
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.cs142-form input,
+.cs142-form textarea {
+  padding: 6px 8px;
+  font-size: 14px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.cs142-form textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.cs142-button {
+  margin-top: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  background-color: #1976d2;
+  color: white;
+}
+
+.cs142-button:hover {
+  background-color: #115293;
+}
+
+.cs142-error {
+  margin-top: 6px;
+  color: #c62828;
+  font-size: 13px;
+}
+
+.cs142-success {
+  margin-top: 6px;
+  color: #2e7d32;
+  font-size: 13px;
+}
