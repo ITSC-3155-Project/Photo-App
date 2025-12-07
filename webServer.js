@@ -47,20 +47,36 @@ app.use(
 
 app.use(bodyParser.json());
 
-/**
- * Auth middleware: for ALL routes except /admin/login and /admin/logout,
- * require a logged-in user in the session.
- */
+// Auth middleware: require login for API endpoints, but allow static files.
+const protectedPrefixes = [
+  "/user",
+  "/photosOfUser",
+  "/commentsOfPhoto",
+  "/photos",
+  "/test",
+];
+
 app.use((request, response, next) => {
-  const openPaths = ["/admin/login", "/admin/logout"];
-  if (openPaths.includes(request.path)) {
+  // Always allow login/logout
+  if (
+    request.path.startsWith("/admin/login") ||
+    request.path.startsWith("/admin/logout")
+  ) {
     return next();
   }
-  if (!request.session.user_id) {
+
+  // Only enforce auth on protected API routes
+  const needsAuth = protectedPrefixes.some((prefix) =>
+    request.path.startsWith(prefix)
+  );
+
+  if (needsAuth && !request.session.user_id) {
     return response.status(401).send("Unauthorized");
   }
-  next();
+
+  return next();
 });
+
 
 /**
  * Root – just a simple message; not used by the React app/tests.
