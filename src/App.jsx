@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 
 import TopBar from "./components/topBar/TopBar.jsx";
@@ -15,12 +15,10 @@ function App() {
   const isLoggedIn = !!loggedInUser;
 
   const handleLogin = (user) => {
-    // called by LoginRegister when /admin/login succeeds
     setLoggedInUser(user);
   };
 
   const handleLogout = () => {
-    // TopBar will also POST /admin/logout; this just clears local state
     setLoggedInUser(null);
   };
 
@@ -36,39 +34,58 @@ function App() {
 
         {/* Right column: main view */}
         <Grid item xs={9}>
-          <Switch>
+          <Routes>
             {/* Login / register page */}
-            <Route path="/login-register">
-              {isLoggedIn ? (
-                // already logged in – go to their details page
-                <Redirect to={`/users/${loggedInUser._id}`} />
-              ) : (
-                <LoginRegister
-                  onLogin={handleLogin}
-                  setLoggedInUser={setLoggedInUser}
-                />
-              )}
-            </Route>
+            <Route
+              path="/login-register"
+              element={
+                isLoggedIn ? (
+                  <Navigate to={`/users/${loggedInUser._id}`} replace />
+                ) : (
+                  <LoginRegister
+                    onLogin={handleLogin}
+                    setLoggedInUser={setLoggedInUser}
+                  />
+                )
+              }
+            />
 
             {/* User detail – protected */}
-            <Route path="/users/:userId">
-              {isLoggedIn ? <UserDetail /> : <Redirect to="/login-register" />}
-            </Route>
+            <Route
+              path="/users/:userId"
+              element={
+                isLoggedIn ? (
+                  <UserDetail />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
 
             {/* User photos – protected */}
-            <Route path="/photos/:userId">
-              {isLoggedIn ? <UserPhotos /> : <Redirect to="/login-register" />}
-            </Route>
+            <Route
+              path="/photos/:userId"
+              element={
+                isLoggedIn ? (
+                  <UserPhotos />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
 
             {/* Default route */}
-            <Route path="/">
-              {isLoggedIn ? (
-                <Redirect to={`/users/${loggedInUser._id}`} />
-              ) : (
-                <Redirect to="/login-register" />
-              )}
-            </Route>
-          </Switch>
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <Navigate to={`/users/${loggedInUser._id}`} replace />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
+          </Routes>
         </Grid>
       </Grid>
     </div>
