@@ -79,10 +79,15 @@ function TopBar({ loggedInUser, onLogout }) {
       const formData = new FormData();
       formData.append("uploadedphoto", file);
 
-      await axios.post("/photos/new", formData);
-      // simplest way to see the new photo: reload current view
-      // (that’s fine for this project)
-      window.location.reload();
+      await axios.post("/photos/new", formData, {
+       headers: { "Content-Type": "multipart/form-data" }
+     });
+
+     // After upload, just route to the user's photos.
+     // This does NOT reload the whole app, so login state stays.
+     if (loggedInUser && loggedInUser._id) {
+       navigate(`/photos/${loggedInUser._id}`);
+     }
     } catch (err) {
       console.error("Error uploading photo:", err);
       alert("Photo upload failed. Check the console for details.");
