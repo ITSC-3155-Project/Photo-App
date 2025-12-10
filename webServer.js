@@ -290,6 +290,34 @@ app.get("/user/list", async (req, res) => {
   }
 });
 
+/** ------------- NEW ROUTE FOR COUNT BUBBLES ------------- */
+/**
+ * GET /user/counts
+ * -> map of userId -> { photoCount, commentCount }
+ * Used for "Count Bubbles" in the sidebar.
+ */
+app.get("/user/counts", async (request, response) => {
+  try {
+    const photos = await Photo.find({}).lean().exec();
+
+    const counts = {};
+    photos.forEach((p) => {
+      const key = String(p.user_id);
+      if (!counts[key]) {
+        counts[key] = { photoCount: 0, commentCount: 0 };
+      }
+      counts[key].photoCount += 1;
+      counts[key].commentCount += (p.comments ? p.comments.length : 0);
+    });
+
+    response.status(200).send(counts);
+  } catch (err) {
+    console.error("Error in /user/counts:", err);
+    response.status(500).send(JSON.stringify(err));
+  }
+});
+/** ------------- END NEW ROUTE ------------- */
+
 /**
  * GET /user/:id
  * -> full user or 400 if invalid/not found
