@@ -1,7 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Grid, Box, CircularProgress } from "@mui/material";
 import axios from "axios";
 
 import TopBar from "./components/topBar/TopBar.jsx";
@@ -9,7 +9,7 @@ import UserList from "./components/userList/userList.jsx";
 import UserDetail from "./components/userDetail/userDetail.jsx";
 import UserPhotos from "./components/userPhotos/userPhotos.jsx";
 import LoginRegister from "./components/loginRegister/loginRegister.jsx";
-import UserComments from "./components/userComments/UserComments.jsx"; // <-- NEW
+import UserComments from "./components/userComments/UserComments.jsx"; // ⬅️ NEW
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -25,15 +25,13 @@ function App() {
     setLoggedInUser(null);
   };
 
-  // --- check existing session on first load / refresh ---
+  // Check existing session on first load / refresh
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
         const response = await axios.get("/current-user");
-        // if cookie/session is valid, this will return the user
         setLoggedInUser(response.data);
       } catch (err) {
-        // likely 401 "No current user" – just treat as logged out
         setLoggedInUser(null);
       } finally {
         setCheckedSession(true);
@@ -43,9 +41,20 @@ function App() {
     fetchCurrentUser();
   }, []);
 
-  // while we’re checking the session, don’t render routes yet
+  // While checking session, show tiny spinner instead of empty screen
   if (!checkedSession) {
-    return null; // or a small loading spinner if you prefer
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
@@ -100,9 +109,9 @@ function App() {
               }
             />
 
-            {/* NEW: User comments – protected */}
+            {/* User comments – protected (Count Bubbles story) */}
             <Route
-              path="/users/:userId/comments"
+              path="/comments/:userId"
               element={
                 isLoggedIn ? (
                   <UserComments />
