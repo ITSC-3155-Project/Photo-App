@@ -368,7 +368,7 @@ function UserPhotos() {
                               variant="body1"
                               sx={{ color: 'text.primary', lineHeight: 1.6 }}
                             >
-                              {comment.comment}
+                              {renderCommentText(comment.comment)}
                             </Typography>
                           </Box>
                         </Box>
