@@ -285,3 +285,94 @@ As a photo sharing app developer, I want to replace the old `FetchModel` hack wi
 - Consider extracting shared axios logic if needed.
 
 **Size:** Medium (3 story points)
+
+Sprint 3 – Authentication, Comments, and Photo Upload User Stories
+Story 10: Login User Story
+
+Title: As a returning user, I want to log in so that I can access my photos and interact with the app.
+
+Description:
+As a user, I want to enter my login name and password so the system can authenticate me and allow me to use the app’s features.
+
+Acceptance Criteria:
+
+ Login form includes login_name and password fields
+
+ User receives an error if credentials are invalid
+
+ Successful login stores the user session on the backend
+
+ TopBar updates to show “Hi <first_name>”
+
+ Users cannot access user list, photos, or comments unless logged in
+
+ Unauthorized requests return 401
+
+Size: Medium (3 story points)
+
+Story 11: Comments User Story
+
+Title: As a logged-in user, I want to add comments to photos so that I can engage with the community.
+
+Description:
+As a user, I want to type a comment under any photo and have it appear immediately with my name and timestamp.
+
+Acceptance Criteria:
+
+ Comment box appears under each photo
+
+ Empty comments are rejected (400 error)
+
+ Posting a comment updates photo view instantly
+
+ Each comment shows name, text, and date
+
+ Clicking a commenter’s name navigates to their profile
+
+ Endpoint used: POST /commentsOfPhoto/:photo_id
+
+Size: Medium (3 story points)
+
+Story 12: Photo Upload User Story
+
+Title: As a logged-in user, I want to upload photos so that I can add new content to my gallery.
+
+Description:
+As a user, I want to choose an image file and upload it to the server so it appears in my photo gallery.
+
+Acceptance Criteria:
+
+ “Add Photo” button in TopBar triggers file picker
+
+ User can select an image file from their computer
+
+ Uploaded file is stored in /images directory
+
+ Backend creates a new Photo object with timestamp + user_id
+
+ Upload errors show clear user feedback
+
+ Endpoint used: POST /photos/new with multipart/form-data
+
+Size: Large (5 story points)
+
+Story 13: Registration and Password User Story
+
+Title: As a new user, I want to create an account so that I can log in and use the app.
+
+Description:
+As a new user, I want to fill out a registration form with my details so that I can create a valid account in the system.
+
+Acceptance Criteria:
+
+ Required fields: login_name, password, first_name, last_name
+
+ "Repeat Password" must match password
+
+ Backend rejects duplicate login_name
+
+ Successful registration clears form and shows a success message
+
+ Endpoint used: POST /user
+
+Size: Medium (3 story points)

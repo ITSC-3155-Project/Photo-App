@@ -1,134 +1,94 @@
-// import React from 'react';
-// import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
-// import { Box, Grid } from '@mui/material';
-// import TopBar from './components/topBar/TopBar';
-// import UserList from './components/userList/UserList';
-// import UserDetail from './components/userDetail/UserDetail';
-// import UserPhotos from './components/userPhotos/UserPhotos';
+// src/App.jsx
+import React, { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Grid } from "@mui/material";
 
-// function App() {
-//   return (
-//     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-//       <TopBar />
-//       <Grid container sx={{ flexGrow: 1, overflow: 'hidden', height: '100%' }}>
-//         <Grid item xs={3} sx={{ borderRight: 1, borderColor: 'divider', overflowY: 'auto', height: '100%' }}>
-//           <UserList />
-//         </Grid>
-//         <Grid item xs={9} sx={{ overflowY: 'auto', height: '100%', bgcolor: '#f5f5f5' }}>
-//           <Routes>
-//             <Route path="/" element={<WelcomeView />} />
-//             <Route path="/users" element={<WelcomeView />} />
-//             <Route path="/users/:userId" element={<UserDetail />} />
-//             <Route path="/photos/:userId" element={<UserPhotos />} />
-//           </Routes>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
-
-// function WelcomeView() {
-//   return (
-//     <Box 
-//       sx={{ 
-//         display: 'flex', 
-//         flexDirection: 'column',
-//         alignItems: 'center', 
-//         justifyContent: 'center', 
-//         height: '100%',
-//         color: 'text.secondary'
-//       }}
-//     >
-//       <Box sx={{ fontSize: 64, mb: 2 }}>📷</Box>
-//       <Box sx={{ fontSize: 24 }}>Select a user to view their profile</Box>
-//     </Box>
-//   );
-// }
-
-// export default App;
-
-
-
-import { Routes, Route } from 'react-router-dom';
-import { Box, Grid } from '@mui/material';
-import TopBar from './components/topBar/TopBar';
-import UserList from './components/userList/UserList';
-import UserDetail from './components/userDetail/UserDetail';
-import UserPhotos from './components/userPhotos/UserPhotos';
+import TopBar from "./components/topBar/TopBar.jsx";
+import UserList from "./components/userList/userList.jsx";
+import UserDetail from "./components/userDetail/userDetail.jsx";
+import UserPhotos from "./components/userPhotos/userPhotos.jsx";
+import LoginRegister from "./components/loginRegister/loginRegister.jsx";
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  const isLoggedIn = !!loggedInUser;
+
+  const handleLogin = (user) => {
+    setLoggedInUser(user);
+  };
+
+  const handleLogout = () => {
+    setLoggedInUser(null);
+  };
+
   return (
-    <Box sx={{ 
-      height: '100vh', 
-      display: 'flex', 
-      flexDirection: 'column',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    }}>
-      <TopBar />
-      <Grid container sx={{ flexGrow: 1, overflow: 'hidden', height: '100%' }}>
-        <Grid item xs={3} sx={{ 
-          borderRight: 1, 
-          borderColor: 'rgba(255,255,255,0.1)', 
-          overflowY: 'auto', 
-          height: '100%',
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <UserList />
+    <div>
+      <TopBar loggedInUser={loggedInUser} onLogout={handleLogout} />
+
+      <Grid container>
+        {/* Left column: user list – only when logged in */}
+        <Grid item xs={3}>
+          {isLoggedIn && <UserList />}
         </Grid>
-        <Grid item xs={9} sx={{ 
-          overflowY: 'auto', 
-          height: '100%', 
-          background: 'rgba(255,255,255,0.9)',
-          backdropFilter: 'blur(20px)'
-        }}>
+
+        {/* Right column: main view */}
+        <Grid item xs={9}>
           <Routes>
-            <Route path="/" element={<WelcomeView />} />
-            <Route path="/users" element={<WelcomeView />} />
-            <Route path="/users/:userId" element={<UserDetail />} />
-            <Route path="/photos/:userId" element={<UserPhotos />} />
+            {/* Login / register page */}
+            <Route
+              path="/login-register"
+              element={
+                isLoggedIn ? (
+                  <Navigate to={`/users/${loggedInUser._id}`} replace />
+                ) : (
+                  <LoginRegister
+                    onLogin={handleLogin}
+                    setLoggedInUser={setLoggedInUser}
+                  />
+                )
+              }
+            />
+
+            {/* User detail – protected */}
+            <Route
+              path="/users/:userId"
+              element={
+                isLoggedIn ? (
+                  <UserDetail />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
+
+            {/* User photos – protected */}
+            <Route
+              path="/photos/:userId"
+              element={
+                isLoggedIn ? (
+                  <UserPhotos />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
+
+            {/* Default route */}
+            <Route
+              path="/"
+              element={
+                isLoggedIn ? (
+                  <Navigate to={`/users/${loggedInUser._id}`} replace />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
           </Routes>
         </Grid>
       </Grid>
-    </Box>
-  );
-}
-
-function WelcomeView() {
-  return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column',
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '100%',
-        color: 'text.secondary'
-      }}
-    >
-      <Box sx={{ 
-        fontSize: 80, 
-        mb: 3,
-        filter: 'drop-shadow(0 4px 20px rgba(102, 126, 234, 0.4))',
-        animation: 'float 3s ease-in-out infinite',
-        '@keyframes float': {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' }
-        }
-      }}>
-        📷
-      </Box>
-      <Box sx={{ 
-        fontSize: 28, 
-        fontWeight: 300,
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text'
-      }}>
-        Select a user to explore their world
-      </Box>
-    </Box>
+    </div>
   );
 }
 
