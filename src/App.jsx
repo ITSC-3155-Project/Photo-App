@@ -9,7 +9,7 @@ import UserList from "./components/userList/userList.jsx";
 import UserDetail from "./components/userDetail/userDetail.jsx";
 import UserPhotos from "./components/userPhotos/userPhotos.jsx";
 import LoginRegister from "./components/loginRegister/loginRegister.jsx";
-import UserComments from "./components/userComments/UserComments.jsx"; // ⬅️ NEW
+import UserComments from "./components/userComments/UserComments.jsx"; 
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
