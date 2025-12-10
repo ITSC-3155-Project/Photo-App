@@ -9,6 +9,7 @@ import UserList from "./components/userList/userList.jsx";
 import UserDetail from "./components/userDetail/userDetail.jsx";
 import UserPhotos from "./components/userPhotos/userPhotos.jsx";
 import LoginRegister from "./components/loginRegister/loginRegister.jsx";
+import UserComments from "./components/userComments/UserComments.jsx"; // <-- NEW
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -24,7 +25,7 @@ function App() {
     setLoggedInUser(null);
   };
 
-  // --- NEW: check existing session on first load / refresh ---
+  // --- check existing session on first load / refresh ---
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -42,7 +43,7 @@ function App() {
     fetchCurrentUser();
   }, []);
 
-  // Optionally: while we’re checking the session, don’t render routes yet
+  // while we’re checking the session, don’t render routes yet
   if (!checkedSession) {
     return null; // or a small loading spinner if you prefer
   }
@@ -93,6 +94,18 @@ function App() {
               element={
                 isLoggedIn ? (
                   <UserPhotos />
+                ) : (
+                  <Navigate to="/login-register" replace />
+                )
+              }
+            />
+
+            {/* NEW: User comments – protected */}
+            <Route
+              path="/users/:userId/comments"
+              element={
+                isLoggedIn ? (
+                  <UserComments />
                 ) : (
                   <Navigate to="/login-register" replace />
                 )
